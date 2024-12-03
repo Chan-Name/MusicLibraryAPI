@@ -1,0 +1,298 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Musics Library API",
+      "version": "1.0",
+      "description": "API for managing a music library"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/songs/{id}": {
+        "delete": {
+          "summary": "Deletes a song by ID",
+          "description": "Deletes a song based on the ID provided",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "description": "Song ID"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "song deleted",
+              "schema": {
+                "$ref": "#/definitions/InfoResponse"
+              }
+            },
+            "404": {
+              "description": "song not found",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            },
+            "500": {
+              "description": "error deleting song",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "/library": {
+        "delete": {
+          "summary": "Deletes the entire library",
+          "description": "Delete all songs in the library",
+          "responses": {
+            "200": {
+              "description": "db deleted",
+              "schema": {
+                "$ref": "#/definitions/InfoResponse"
+              }
+            },
+            "500": {
+              "description": "error deleting db",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        },
+        "get": {
+          "summary": "Returns the entire library",
+          "description": "Get all songs in the library",
+          "responses": {
+            "200": {
+              "description": "library data",
+              "schema": {
+                "$ref": "#/definitions/LibraryResponse"
+              }
+            },
+            "500": {
+              "description": "error return library",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "/library/{group}/{song}": {
+        "get": {
+          "summary": "Retrieves a song by group and name",
+          "description": "Get a song by its group and name",
+          "parameters": [
+            {
+              "name": "group",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "Group name"
+            },
+            {
+              "name": "song",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "Song name"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "song text",
+              "schema": {
+                "$ref": "#/definitions/SongTextResponse"
+              }
+            },
+            "404": {
+              "description": "song not found",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            },
+            "500": {
+              "description": "error return song with name",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "/songs": {
+        "post": {
+          "summary": "Save a new song",
+          "description": "Save a new song by group and title",
+          "parameters": [
+            {
+              "name": "song",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/SongToSave"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "song saved",
+              "schema": {
+                "$ref": "#/definitions/InfoResponse"
+              }
+            },
+            "400": {
+              "description": "invalid request",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            },
+            "404": {
+              "description": "song not found",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            },
+            "500": {
+              "description": "error saving song",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+      },
+      "/songs/{id}/{group}/{song}": {
+        "patch": {
+          "summary": "Update a song",
+          "description": "Update the song details by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "Song ID"
+            },
+            {
+              "name": "group",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "Song group"
+            },
+            {
+              "name": "song",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "Song title"
+            },
+            {
+              "name": "songDetail",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/SongDetail"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "song updated",
+              "schema": {
+                "$ref": "#/definitions/InfoResponse"
+              }
+            },
+            "400": {
+              "description": "invalid request",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            },
+            "404": {
+              "description": "song not found",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            },
+            "500": {
+              "description": "error updating song",
+              "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "InfoResponse": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "LibraryResponse": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SongTextResponse": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "string"
+          }
+        }
+      },
+      "SongToSave": {
+        "type": "object",
+        "properties": {
+          "group": {
+            "type": "string"
+          },
+          "song": {
+            "type": "string"
+          }
+        }
+      },
+      "SongDetail": {
+        "type": "object",
+        "properties": {
+          "releaseDate": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+  
